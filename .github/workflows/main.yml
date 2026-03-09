@@ -17,6 +17,12 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+     
+      - name: Test connectivity to PDF
+        run: |
+          echo "Checking if PDF is reachable..."
+          curl -I https://economie.fgov.be/sites/default/files/Files/Energy/prices/Tarifs-officiels-produits-petroliers.pdf
+
 
       - name: Install dependencies
         run: pip install requests pdfplumber sendgrid
