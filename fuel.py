@@ -2,8 +2,10 @@ import requests
 import pdfplumber
 import io
 import re
-import json
+import os
 from datetime import datetime
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 PDF_URL = "https://economie.fgov.be/sites/default/files/Files/Energy/prices/Tarifs-officiels-produits-petroliers.pdf"
 
@@ -51,11 +53,33 @@ def get_prices():
         return float(v.replace(",", ".")) if v else None
 
     return {
-        "date": effective_date,
-        "E5_TVAC": convert(e5),
-        "E10_TVAC": convert(e10)
+        effective_date,
+        convert(e5),
+        convert(e10)
     }
+
+def send_email(date, e5, e10):
+
+    message = Mail(
+        from_email="fuelbot@yourdomain.com",
+        to_emails=os.environ["MAIL_TO"],
+        subject=f"Fuel price update {date}",
+        plain_text_content=f"""
+Fuel price update
+
+Date: {date}
+
+Essence 95 RON E5: {e5} €/L
+Essence 95 RON E10: {e10} €/L
+"""
+    )
+
+    sg = SendGridAPIClient(os.environ["SENDGRID_API_KEY"])
+    sg.send(message)
+
 
 
 if __name__ == "__main__":
-    print(json.dumps(get_prices(), indent=2))
+    date, e5, e10 = get_prices()
+    send_email(date, e5, e10)
+    #print(json.dumps(get_prices(), indent=2))
