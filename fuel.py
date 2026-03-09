@@ -61,7 +61,7 @@ def get_prices():
 def send_email(date, e5, e10):
 
     message = Mail(
-        from_email="kanemi8026@him6.com",
+        from_email="davidtest648@gmail.com",
         to_emails=os.environ["MAIL_TO"],
         subject=f"Fuel price update {date}",
         plain_text_content=f"""
