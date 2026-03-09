@@ -2,10 +2,9 @@ name: Fuel price bot
 
 on:
   schedule:
-    - cron: "25 21 * * *"   # runs daily at 20:00 Belgium time (UTC+1)
+    - cron: "25 20 * * *"   # runs daily at 20:00 Belgium time (UTC+1)
   workflow_dispatch:       # manual trigger
-
-jobs:
+0jobs:
   fuel:
     runs-on: ubuntu-latest
 
