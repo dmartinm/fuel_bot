@@ -52,11 +52,11 @@ def get_prices():
     def convert(v):
         return float(v.replace(",", ".")) if v else None
 
-    return {
+    return (
         effective_date,
         convert(e5),
         convert(e10)
-    }
+    )
 
 def send_email(date, e5, e10):
 
