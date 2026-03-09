@@ -1,0 +1,28 @@
+name: Fuel price bot
+
+on:
+  schedule:
+    - cron: "0 19 * * *"   # runs daily at 20:00 Belgium time (UTC+1)
+  workflow_dispatch:       # manual trigger
+
+jobs:
+  fuel:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests pdfplumber
+
+      - name: Run fuel script
+        env:
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+          EMAIL_RECEIVER: ${{ secrets.EMAIL_RECEIVER }}
+          EMAIL_TOKEN: ${{ secrets.EMAIL_TOKEN }}
+        run: python fuel_update.py
